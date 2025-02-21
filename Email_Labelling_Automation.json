@@ -1,0 +1,317 @@
+{
+  "name": "Email Labelling Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        420,
+        240
+      ],
+      "id": "70b61963-78b7-462c-8464-08018f2d491e",
+      "name": "Gmail Trigger"
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Personal",
+              "description": " \"Label this email as 'Personal' if it includes messages from family, friends, or about personal events.\""
+            },
+            {
+              "category": "Promotions or Ads",
+              "description": "\"Label this email as 'Promotions' if it includes discounts, advertisements, or sales offers from companies.\""
+            },
+            {
+              "category": "Financial",
+              "description": " \"Label this email as 'Finance' if it mentions bills, transactions, invoices, or account balances.\""
+            },
+            {
+              "category": "Newsletters/Updates",
+              "description": "\"Label this email as 'Newsletter' if it is a subscription, blog update, or company announcement.\""
+            },
+            {
+              "category": "Spam/Junk",
+              "description": "\"Label this email as 'Spam' if it contains irrelevant offers, scams, or unsolicited messages.\""
+            },
+            {
+              "category": "Social Media",
+              "description": "\"Label this email as 'Social' if it’s related to social media updates, friend requests, or interactions.\""
+            },
+            {
+              "category": "Security",
+              "description": "\"Label this email as 'Security' if it mentions account logins, suspicious activity, password resets, unauthorized access attempts, or IP address warnings.\""
+            }
+          ]
+        },
+        "options": {
+          "systemPromptTemplate": "Please classify the text provided by the user into one of the following categories: {categories}, and use the provided formatting instructions below. Don't explain, and only output the json."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        580,
+        240
+      ],
+      "id": "e4fc8ec3-0354-487e-8551-12f128436970",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.1,
+      "position": [
+        560,
+        400
+      ],
+      "id": "5a0a5659-c25b-450e-bb7f-c1f57dddc331",
+      "name": "OpenAI Chat Model1"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_109848705520121656"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        620,
+        60
+      ],
+      "id": "eae90690-43cb-497c-a520-53cb84393104",
+      "name": "Personal",
+      "webhookId": "09549d40-0e88-455c-9cdd-3f8c6f9d92c1"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_2063790104301514599"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        740,
+        60
+      ],
+      "id": "dd68baf4-fdf1-4066-b765-273a2368ba4a",
+      "name": "Promotions or Ads",
+      "webhookId": "503a7ab4-2deb-4695-b1d2-c6c127fff4f9"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_7367935559884372685"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        860,
+        60
+      ],
+      "id": "b0781fa9-8419-482f-8a7e-c1a11d9d8a7c",
+      "name": "Financial",
+      "webhookId": "147292e6-3e0a-4ac8-8977-db75df482f00"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "{{ $json.id }}",
+        "labelIds": [
+          "Label_4496237383877160811"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        980,
+        60
+      ],
+      "id": "a7a26b38-2100-49b8-a170-c83cd4b9b4d3",
+      "name": "Newsletters/Updates",
+      "webhookId": "b383c686-b769-476c-b41b-3dcdcfef6cd7"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_3671314501856073612"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1100,
+        60
+      ],
+      "id": "21faae80-27c8-4bdb-90b6-90e3682556b5",
+      "name": "Spam/Junk",
+      "webhookId": "98849944-bcec-4dca-a68e-77d91b5bd36f"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_5003636228924357129"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1220,
+        60
+      ],
+      "id": "4c5fe503-412d-4fc4-9d67-0a67e1579587",
+      "name": "Social Media",
+      "webhookId": "51949306-4443-4311-8103-5aa01e7cc38f"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_2863604663940993971"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1340,
+        60
+      ],
+      "id": "88acfa10-a17c-4e06-969a-67f28fbe677e",
+      "name": "Security",
+      "webhookId": "c2f84791-037c-4731-8b53-103501783567"
+    },
+    {
+      "parameters": {
+        "content": "Email Labelling Automation",
+        "height": 480,
+        "width": 1180
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        360,
+        40
+      ],
+      "id": "04e8f503-4b2a-489d-bc35-3c532a4f2f2a",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "Personal",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Promotions or Ads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Financial",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Newsletters/Updates",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Spam/Junk",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Social Media",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Security",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cc8a5227-6ebd-41ba-863c-3cb9f816f70c",
+  "meta": {
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "QJGLwPDG1Hmjq5an",
+  "tags": []
+}
